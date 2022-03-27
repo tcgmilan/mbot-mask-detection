@@ -10,7 +10,7 @@ class Alert:
         self.warnings = [x for x in open("figyelmeztetesek.txt", "r")]
         for x in self.engine.getProperty("voices"):
             print(x)
-        self.engine.setProperty("voice", "com.apple.speech.synthesis.voice.mariska")
+        self.engine.setProperty("voice", "hungarian")
 
     def read_warning(self):
         self.engine.say(random.choice(self.warnings))
