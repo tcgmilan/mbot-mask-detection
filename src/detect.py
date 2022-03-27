@@ -54,3 +54,5 @@ def start_detecting():
                 print("Nincs maszk!")
                 alert.read_warning()
                 time.sleep(1.0)
+        if cv2.waitKey(1) & 0xFF == ord('q'):
+            break
