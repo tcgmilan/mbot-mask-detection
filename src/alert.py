@@ -8,13 +8,8 @@ class Alert:
 
     def init(self):
         self.warnings = [x for x in open("figyelmeztetesek.txt", "r")]
-        for x in self.engine.getProperty("voices"):
-            print(x)
         self.engine.setProperty("voice", "hungarian")
 
     def read_warning(self):
         self.engine.say(random.choice(self.warnings))
         self.engine.runAndWait()
-
-a = Alert()
-a.init()

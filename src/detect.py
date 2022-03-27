@@ -37,7 +37,10 @@ def start_detecting():
     alert.init()
     vs = VideoStream(src = 0).start()
     time.sleep(2.0)
+    i=1
     while True:
+        print("Frame "+ i)
+        i += 1
         frame = vs.read()
         frame = imutils.resize(frame, width = 400)
 
@@ -48,5 +51,6 @@ def start_detecting():
             (mask, without_mask) = pred
 
             if without_mask > mask:
+                print("Nincs maszk!")
                 alert.read_warning()
                 time.sleep(1.0)
