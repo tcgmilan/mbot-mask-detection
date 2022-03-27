@@ -39,7 +39,7 @@ def start_detecting():
     time.sleep(2.0)
     i=1
     while True:
-        print("Frame "+ i)
+        print("Frame "+ str(i))
         i += 1
         frame = vs.read()
         frame = imutils.resize(frame, width = 400)
