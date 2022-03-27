@@ -5,7 +5,6 @@ from imutils.video import VideoStream
 from src.alert import Alert
 
 import numpy as np
-import argparse
 import imutils
 import time
 import cv2
@@ -15,7 +14,7 @@ proto_txt_path = "./dataset/deploy.prototxt"
 weights_path = "./dataset/res10_300x300_ssd_iter_140000.caffemodel"
 mask_detector_model = "./dataset/mask_detector.model"
 face_net = cv2.dnn.readNet(proto_txt_path, weights_path)
-mask_net = load_model("mask_detector_model")
+mask_net = load_model(mask_detector_model)
 
 def calculate_mask(frame, face_net, mask_net):
     (h, w) = frame.shape[:2]
