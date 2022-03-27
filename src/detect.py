@@ -26,6 +26,19 @@ def calculate_mask(frame, face_net, mask_net):
     locs = []
     preds = []
     print(faces)
+    for i in range(0, detections.shape[2]):
+        confidence = detections[0, 0, i, 2]
+        if confidence > 0.5:
+            box = detections[0, 0, i, 3 : 7] * np.array([w, h, w, h])
+            (start_x, start_y,) = (max(0, start_x), max(0, start_y))
+            (end_x, end_y,) = (max(0, end_x), max(0, end_y))
+            face = frame[start_y : end_y, start_x : end_x]
+            face = cv2.cvtColor(face, cv2.COLOR_BGR2RGB)
+            face = cv2.resize(face, (224, 224))
+			face = img_to_array(face)
+			face = preprocess_input(face)			
+            faces.append(face)
+			locs.append((startX, startY, endX, endY))
     if len(faces):
         faces = np.array(faces, dtype = "float32")
         preds = mask_net.predict(faces, batch_size = 32)
