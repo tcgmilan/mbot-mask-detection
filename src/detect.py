@@ -36,7 +36,7 @@ def calculate_mask(frame, face_net, mask_net):
             face = cv2.cvtColor(face, cv2.COLOR_BGR2RGB)
             face = cv2.resize(face, (224, 224))
             face = img_to_array(face)
-            face = preprocess_input(face)			
+            face = preprocess_input(face)
             faces.append(face)
             locs.append((startX, startY, endX, endY))
     if len(faces):
