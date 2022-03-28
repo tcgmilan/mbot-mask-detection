@@ -68,8 +68,8 @@ def start_detecting():
                 alert.read_warning()
                 time.sleep(1.0)
     cv2.imshow("Frame", frame)
-	key = cv2.waitKey(1) & 0xFF
+    key = cv2.waitKey(1) & 0xFF
 
-	# if the `q` key was pressed, break from the loop
-	if key == ord("q"):
-		break
+    # if the `q` key was pressed, break from the loop
+    if key == ord("q"):
+        break
