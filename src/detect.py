@@ -30,7 +30,7 @@ def calculate_mask(frame, face_net, mask_net):
         confidence = detections[0, 0, i, 2]
         if confidence > 0.5:
             box = detections[0, 0, i, 3 : 7] * np.array([w, h, w, h])
-            (startX, startY, endX, endY) = box.astype("int")
+            (start_x, start_y, end_x, end_y) = box.astype("int")
             (start_x, start_y,) = (max(0, start_x), max(0, start_y))
             (end_x, end_y,) = (max(0, end_x), max(0, end_y))
             face = frame[start_y : end_y, start_x : end_x]
