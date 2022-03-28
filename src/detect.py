@@ -10,6 +10,7 @@ import time
 import cv2
 import os
 import colorama
+import datetime
 
 colorama.init(autoreset = True)
 proto_txt_path = "/home/pi/mbot-mask-detection/dataset/deploy.prototxt"
@@ -48,6 +49,10 @@ def calculate_mask(frame, face_net, mask_net):
 
     return (locs, preds)
 
+def ctime():
+
+    return datetime.datetime.now().strftime("%H:%M:%S")
+
 def start_detecting():
     alert = Alert()
     alert.init()
@@ -69,9 +74,7 @@ def start_detecting():
             if without_mask > mask:
                 alert.read_warning()
                 time.sleep(3.0)
-                print(colorama.Fore.RED+"Nincs Maszk!")
-            else:
-                print(colorama.Fore.GREEN + "Maszk Érzékelve!")
+                print(colorama.Fore.GREEN+f"[{ctime()}] " + colorama.Fore.RED + " Nincs maszk az illetőn! Figyelmeztetés elküldve!")
         #cv2.imshow("Frame", frame)
         key = cv2.waitKey(1) & 0xFF
 
