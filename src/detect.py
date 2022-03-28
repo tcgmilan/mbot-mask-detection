@@ -28,7 +28,7 @@ def calculate_mask(frame, face_net, mask_net):
     faces = []
     locs = []
     preds = []
-    print(faces)
+    print(colorama.Fore.MAGENTA + f"Arcok száma: "+ colorama.Fore.YELLOW + str(len(faces)) 
     for i in range(0, detections.shape[2]):
         confidence = detections[0, 0, i, 2]
         if confidence > 0.5:
@@ -60,8 +60,6 @@ def start_detecting():
     time.sleep(2.0)
     i=1
     while True:
-        print("Frame "+ str(i))
-        i += 1
         frame = vs.read()
         frame = imutils.resize(frame, width = 400)
 
