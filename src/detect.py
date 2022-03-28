@@ -39,7 +39,7 @@ def calculate_mask(frame, face_net, mask_net):
             face = img_to_array(face)
             face = preprocess_input(face)
             faces.append(face)
-            locs.append((startX, startY, endX, endY))
+            locs.append((start_x, start_y, end_x, end_y))
     if len(faces):
         faces = np.array(faces, dtype = "float32")
         preds = mask_net.predict(faces, batch_size = 32)
@@ -67,10 +67,10 @@ def start_detecting():
             if without_mask > mask:
                 print("Nincs maszk!")
                 alert.read_warning()
-                time.sleep(1.0)
+                time.sleep(3.0)
+                
         cv2.imshow("Frame", frame)
         key = cv2.waitKey(1) & 0xFF
 
-        # if the `q` key was pressed, break from the loop
         if key == ord("q"):
             break
