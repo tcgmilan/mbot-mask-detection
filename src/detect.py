@@ -9,7 +9,9 @@ import imutils
 import time
 import cv2
 import os
+import colorama
 
+colorama.init(autoreset = True)
 proto_txt_path = "/home/pi/mbot-mask-detection/dataset/deploy.prototxt"
 weights_path = "/home/pi/mbot-mask-detection/dataset/res10_300x300_ssd_iter_140000.caffemodel"
 mask_detector_model = "/home/pi/mbot-mask-detection/dataset/mask_detector.model"
@@ -65,10 +67,11 @@ def start_detecting():
             (mask, without_mask) = pred
 
             if without_mask > mask:
-                print("Nincs maszk!")
                 alert.read_warning()
                 time.sleep(3.0)
-                
+                print(colorama.Fore.RED+"Nincs Maszk!")
+            else:
+                print(colorama.Fore.GREEN + "Maszk Érzékelve!")
         #cv2.imshow("Frame", frame)
         key = cv2.waitKey(1) & 0xFF
 
