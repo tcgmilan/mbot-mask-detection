@@ -72,7 +72,7 @@ def start_detecting():
                 alert.read_warning()
                 time.sleep(3.0)
                 print(colorama.Fore.GREEN+f"[{ctime()}] " + colorama.Fore.RED + " Nincs maszk az illetőn! Figyelmeztetés elküldve!")
-        cv2.imshow("Frame", frame)
+        #cv2.imshow("Frame", frame)
         key = cv2.waitKey(1) & 0xFF
 
         if key == ord("q"):
