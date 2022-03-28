@@ -10,9 +10,9 @@ import time
 import cv2
 import os
 
-proto_txt_path = "./dataset/deploy.prototxt"
-weights_path = "./dataset/res10_300x300_ssd_iter_140000.caffemodel"
-mask_detector_model = "./dataset/mask_detector.model"
+proto_txt_path = "/home/pi/mbot-mask-detection/dataset/deploy.prototxt"
+weights_path = "/home/pi/mbot-mask-detection/dataset/res10_300x300_ssd_iter_140000.caffemodel"
+mask_detector_model = "/home/pi/mbot-mask-detection/dataset/mask_detector.model"
 face_net = cv2.dnn.readNet(proto_txt_path, weights_path)
 mask_net = load_model(mask_detector_model)
 
