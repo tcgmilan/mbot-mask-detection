@@ -69,7 +69,7 @@ def start_detecting():
                 alert.read_warning()
                 time.sleep(3.0)
                 
-        cv2.imshow("Frame", frame)
+        #cv2.imshow("Frame", frame)
         key = cv2.waitKey(1) & 0xFF
 
         if key == ord("q"):
