@@ -9,7 +9,10 @@ import imutils
 import time
 import cv2
 import os
+import colorama
+import datetime
 
+colorama.init(autoreset = True)
 proto_txt_path = "/home/pi/mbot-mask-detection/dataset/deploy.prototxt"
 weights_path = "/home/pi/mbot-mask-detection/dataset/res10_300x300_ssd_iter_140000.caffemodel"
 mask_detector_model = "/home/pi/mbot-mask-detection/dataset/mask_detector.model"
@@ -25,7 +28,7 @@ def calculate_mask(frame, face_net, mask_net):
     faces = []
     locs = []
     preds = []
-    print(faces)
+    print(colorama.Fore.MAGENTA + f"Arcok száma: "+ colorama.Fore.YELLOW + str(len(faces))) 
     for i in range(0, detections.shape[2]):
         confidence = detections[0, 0, i, 2]
         if confidence > 0.5:
@@ -46,15 +49,16 @@ def calculate_mask(frame, face_net, mask_net):
 
     return (locs, preds)
 
+def ctime():
+
+    return datetime.datetime.now().strftime("%H:%M:%S")
+
 def start_detecting():
     alert = Alert()
     alert.init()
     vs = VideoStream(src = 0).start()
     time.sleep(2.0)
-    i=1
     while True:
-        print("Frame "+ str(i))
-        i += 1
         frame = vs.read()
         frame = imutils.resize(frame, width = 400)
 
@@ -65,10 +69,9 @@ def start_detecting():
             (mask, without_mask) = pred
 
             if without_mask > mask:
-                print("Nincs maszk!")
                 alert.read_warning()
                 time.sleep(3.0)
-                
+                print(colorama.Fore.GREEN+f"[{ctime()}] " + colorama.Fore.RED + " Nincs maszk az illetőn! Figyelmeztetés elküldve!")
         #cv2.imshow("Frame", frame)
         key = cv2.waitKey(1) & 0xFF
 
