@@ -3,6 +3,7 @@ from tensorflow.keras.preprocessing.image import img_to_array
 from tensorflow.keras.models import load_model
 from imutils.video import VideoStream
 from src.alert import Alert
+from src.confconvert import to_bool, to_int
 
 import numpy as np
 import imutils
@@ -11,13 +12,22 @@ import cv2
 import os
 import colorama
 import datetime
+import configparser
+
+
 
 colorama.init(autoreset = True)
-proto_txt_path = "/home/pi/mbot-mask-detection/dataset/deploy.prototxt"
-weights_path = "/home/pi/mbot-mask-detection/dataset/res10_300x300_ssd_iter_140000.caffemodel"
-mask_detector_model = "/home/pi/mbot-mask-detection/dataset/mask_detector.model"
+path = "/home/pi/mbot-mask-detection"
+proto_txt_path = os.path.join(path, "dataset", "deploy.prototxt")
+weights_path = os.path.join(path, "dataset", "res10_300x300_ssd_iter_140000.caffemodel")
+mask_detector_model = os.path.join(path, "dataset", "mask_detector.model")
 face_net = cv2.dnn.readNet(proto_txt_path, weights_path)
 mask_net = load_model(mask_detector_model)
+config = configparser.ConfigParser()
+config.read(os.path.join(path,"BEALLITASOK.cfg"), encoding = "utf-8")
+
+def ctime():
+    return "[" + colorama.Fore.CYAN+ datetime.datetime.now().strftime("%H:%M:%S") + "]"
 
 def calculate_mask(frame, face_net, mask_net):
     (h, w) = frame.shape[:2]
@@ -28,7 +38,6 @@ def calculate_mask(frame, face_net, mask_net):
     faces = []
     locs = []
     preds = []
-    print(colorama.Fore.MAGENTA + f"Arcok száma: "+ colorama.Fore.YELLOW + str(len(faces))) 
     for i in range(0, detections.shape[2]):
         confidence = detections[0, 0, i, 2]
         if confidence > 0.5:
@@ -43,15 +52,13 @@ def calculate_mask(frame, face_net, mask_net):
             face = preprocess_input(face)
             faces.append(face)
             locs.append((start_x, start_y, end_x, end_y))
+    print(ctime() + colorama.Fore.MAGENTA + f"Arcok száma: "+ colorama.Fore.YELLOW + str(len(faces))) 
+
     if len(faces):
         faces = np.array(faces, dtype = "float32")
         preds = mask_net.predict(faces, batch_size = 32)
 
     return (locs, preds)
-
-def ctime():
-
-    return datetime.datetime.now().strftime("%H:%M:%S")
 
 def start_detecting():
     alert = Alert()
@@ -67,12 +74,16 @@ def start_detecting():
         for (box, pred) in zip(locs, preds):
             (start_x, start_y, end_x, end_y) = box
             (mask, without_mask) = pred
-
+            
             if without_mask > mask:
                 alert.read_warning()
-                time.sleep(3.0)
-                print(colorama.Fore.GREEN+f"[{ctime()}] " + colorama.Fore.RED + " Nincs maszk az illetőn! Figyelmeztetés elküldve!")
-        #cv2.imshow("Frame", frame)
+                time.sleep(to_int(config["BEALLITASOK"]["figyelmeztetes_varakozas"]))
+                print(ctime() + colorama.Fore.RED + " Figyelem! Nincs maszk az illetőn! Figyelmeztetés elküldve!")
+            else:
+                print(ctime() + colorama.Fore.GREEN + "Maszk érzékelve az illetőn!")
+        
+        if to_bool(config["BEALLITASOK"]["video_kimenet"]):
+            cv2.imshow("Frame", frame)
         key = cv2.waitKey(1) & 0xFF
 
         if key == ord("q"):
