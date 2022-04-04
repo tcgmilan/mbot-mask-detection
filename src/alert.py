@@ -1,8 +1,19 @@
+# M5 : masKey
+# Figyelmeztetésért felelős python kód
+# https://github.com/tcgmilan/mbot-mask-detection
+
+
+# Véletlenszerű számok, elemek kiválasztásáért felelős modul (random)
+# Szöveg felolvasásáért felelős modul (pyttsx3)
 import random
 import pyttsx3
 
 class Alert:
-
+    """
+    Figyelmezetetést véghezvivő class. Létrehozáskor betölti a lehetséges figyelmeztetéseket,
+    mellőzve a többszöri, felesleges beolvasást. A hang illetve nyelvkód az alapértelmezet Linux hangoknak
+    felel meg.
+    """
     def __init__(self):
         self.engine = pyttsx3.init()
     def init(self):
