@@ -26,8 +26,8 @@
 # Felépítés
 - ### Raspberry PI 3B (Raspberryi OS - Version 11, Bullseye)
 - ### Kamera (Microsoft, 480p, 30fps)
-- ### Makeblock mBot (Módosított firmware (később elérhető lesz))
-- ### Akkumulátorok (részletek hamarosan)
+- ### Makeblock mBot ([Módosított firmware](https://github.com/tcgmilan/mbot-mask-detection/tree/dev/mbot_firmware))
+- ### Akkumulátorok (2 cellás, 8000 mAh (2x4000 mAh))
 
 <br><br>
 
