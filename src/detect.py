@@ -35,7 +35,7 @@ import configparser
 # Az arc és maszk érzékeléshez szükséges model fájlok, beállítások elérési útjának meghatározása
 # Beállítások betöltése
 colorama.init(autoreset = True)
-path = "/home/pi/mbot-mask-detection"
+path = "/home/pi/mbot-mask-detection/"
 proto_txt_path = os.path.join(path, "dataset", "deploy.prototxt")
 weights_path = os.path.join(path, "dataset", "res10_300x300_ssd_iter_140000.caffemodel")
 mask_detector_model = os.path.join(path, "dataset", "mask_detector.model")
