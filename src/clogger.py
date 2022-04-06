@@ -17,7 +17,7 @@ import os
 # Színes kimenet inicializálása
 # Különböző elérési utak, globális változók deklarálása
 # Beállítások betöltése
-colorama.init()
+colorama.init(autoreset = True)
 path = "/home/pi/mbot-mask-detection/"
 config = configparser.ConfigParser()
 config.read(os.path.join(path,"BEALLITASOK.cfg"), encoding = "utf-8")
