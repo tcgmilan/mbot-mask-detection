@@ -35,7 +35,7 @@ import configparser
 # Az arc és maszk érzékeléshez szükséges model fájlok, beállítások elérési útjának meghatározása
 # Beállítások betöltése
 colorama.init(autoreset = True)
-path = "/home/pi/mbot-mask-detection"
+path = "/home/pi/mbot-mask-detection/"
 proto_txt_path = os.path.join(path, "dataset", "deploy.prototxt")
 weights_path = os.path.join(path, "dataset", "res10_300x300_ssd_iter_140000.caffemodel")
 mask_detector_model = os.path.join(path, "dataset", "mask_detector.model")
@@ -101,7 +101,6 @@ def start_detecting():
         (locs, preds) = calculate_mask(frame, face_net, mask_net)
 
         for (box, pred) in zip(locs, preds):
-            (start_x, start_y, end_x, end_y) = box
             (mask, without_mask) = pred
             
             if without_mask > mask:
@@ -111,7 +110,8 @@ def start_detecting():
             else:
                 mask_found()
         if to_bool(config["BEALLITASOK"]["video_kimenet"]):
-            cv2.imshow("Frame", frame)
+            cv2.imshow("m5 maskey | maszk érzékelés", frame)
+            
         key = cv2.waitKey(1) & 0xFF
 
         if key == ord("q"):

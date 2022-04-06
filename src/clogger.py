@@ -17,8 +17,8 @@ import os
 # Színes kimenet inicializálása
 # Különböző elérési utak, globális változók deklarálása
 # Beállítások betöltése
-colorama.init()
-path = "/home/pi/mbot-mask-detection"
+colorama.init(autoreset = True)
+path = "/home/pi/mbot-mask-detection/"
 config = configparser.ConfigParser()
 config.read(os.path.join(path,"BEALLITASOK.cfg"), encoding = "utf-8")
 logger = Logger()
@@ -30,7 +30,7 @@ def ctime(dtformat : str = "%H:%M:%S"):
     Formátum a 'dtformat' megadásával változtatható.\n
     Alapértelmezett formátum: '%H:%M:%S'
     """
-    return "[" + colorama.Fore.CYAN+ datetime.datetime.now().strftime(dtformat) + "]"
+    return "[" + colorama.Fore.CYAN+ datetime.datetime.now().strftime(dtformat) + "] "
 
 def face_counter(faces : list):
     """
