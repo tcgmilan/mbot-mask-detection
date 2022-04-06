@@ -15,7 +15,7 @@ class Logger:
     .txt formátumban kezelve az egyszerű elérhetőségért, olvasásért, kezelésért.
     """
     def __init__(self):
-        self.path = "/home/pi/mbot-mask-detection/"
+        self.path = "/home/pi/mbot-mask-detection/logs/"
         self.current_time = "[" + datetime.datetime.now().strftime("%Y:%m:%d-%H:%M:%S") + "]"
     def init(self):
             open(os.path.join(self.path, self.current_time + ".txt"), "w+", encoding = "utf-8")

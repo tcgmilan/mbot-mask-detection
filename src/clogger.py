@@ -30,7 +30,7 @@ def ctime(dtformat : str = "%H:%M:%S"):
     Formátum a 'dtformat' megadásával változtatható.\n
     Alapértelmezett formátum: '%H:%M:%S'
     """
-    return "[" + colorama.Fore.CYAN+ datetime.datetime.now().strftime(dtformat) + "]"
+    return "[" + colorama.Fore.CYAN+ datetime.datetime.now().strftime(dtformat) + "] "
 
 def face_counter(faces : list):
     """
