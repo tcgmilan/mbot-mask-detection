@@ -103,18 +103,20 @@ def start_detecting():
         (locs, preds) = calculate_mask(frame, face_net, mask_net)
 
         for (box, pred) in zip(locs, preds):
-            (mask, without_mask) = pred 
+            (mask, without_mask) = pred
+            print("TESZT#1")
             if without_mask > mask:
                 results.append(False)
                 alert.read_warning()
-                time.sleep(to_int(config["BEALLITASOK"]["figyelmeztetes_varakozas"]))
                 mask_not_found()
-            else:
+                time.sleep(to_int(config["BEALLITASOK"]["figyelmeztetes_varakozas"]))
+            elif mask > without_mask:
                 if results[-1] is False:
                     alert.read_award()
                     results.clear()
                 results.append(True)
                 mask_found()
+            else: pass
         if to_bool(config["BEALLITASOK"]["video_kimenet"]):
             cv2.imshow("m5 maskey | maszk érzékelés", frame)
             
