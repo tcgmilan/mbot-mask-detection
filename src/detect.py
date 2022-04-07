@@ -97,6 +97,7 @@ def start_detecting():
     alert.init()
     alert.read("A program elindult!")
     vs = VideoStream(src = 0).start()
+    prev_frames = []
     time.sleep(2.0)
     while True:
         frame = vs.read()
@@ -108,10 +109,15 @@ def start_detecting():
 
             (mask, without_mask) = pred 
             if without_mask > mask:
+                prev_frames.append(False)
                 alert.read_warning()
                 mask_not_found()
                 time.sleep(to_int(config["BEALLITASOK"]["figyelmeztetes_varakozas"]))
             else:
+                if prev_frames[-1] is False:
+                    alert.read("MŰKÖDIK! RAJTAD VAN A MASZK! NÁJSZ!")
+                    prev_frames.clear()
+
                 mask_found()
         if to_bool(config["BEALLITASOK"]["video_kimenet"]):
             cv2.imshow("m5 maskey | maszk érzékelés", frame)
