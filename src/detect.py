@@ -104,6 +104,7 @@ def start_detecting():
 
         for (box, pred) in zip(locs, preds):
             (mask, without_mask) = pred 
+            print(pred)
             if without_mask > mask:
                 alert.read_warning()
                 mask_not_found()
