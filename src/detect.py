@@ -111,13 +111,13 @@ def start_detecting():
                 alert.read_warning()
                 mask_not_found()
                 time.sleep(to_int(config["BEALLITASOK"]["figyelmeztetes_varakozas"]))
-            elif mask > without_mask:
+            else:
                 if results[-1] is False:
                     alert.read_award()
                     results.clear()
                 results.append(True)
                 mask_found()
-            else: pass
+
         if to_bool(config["BEALLITASOK"]["video_kimenet"]):
             cv2.imshow("m5 maskey | maszk érzékelés", frame)
             
