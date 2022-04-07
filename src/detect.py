@@ -103,8 +103,9 @@ def start_detecting():
         (locs, preds) = calculate_mask(frame, face_net, mask_net)
 
         for (box, pred) in zip(locs, preds):
+            (start_x, start_y, end_x, end_y) = box
+
             (mask, without_mask) = pred 
-            print(pred)
             if without_mask > mask:
                 alert.read_warning()
                 mask_not_found()
