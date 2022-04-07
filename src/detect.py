@@ -63,6 +63,7 @@ def calculate_mask(frame, face_net, mask_net):
     preds = []
     for i in range(0, detections.shape[2]):
         confidence = detections[0, 0, i, 2]
+        print(confidence)
         if confidence > 0.5:
             box = detections[0, 0, i, 3 : 7] * np.array([w, h, w, h])
             (start_x, start_y, end_x, end_y) = box.astype("int")
@@ -105,8 +106,8 @@ def start_detecting():
             (mask, without_mask) = pred 
             if without_mask > mask:
                 alert.read_warning()
-                time.sleep(to_int(config["BEALLITASOK"]["figyelmeztetes_varakozas"]))
                 mask_not_found()
+                time.sleep(to_int(config["BEALLITASOK"]["figyelmeztetes_varakozas"]))
             else:
                 mask_found()
         if to_bool(config["BEALLITASOK"]["video_kimenet"]):
