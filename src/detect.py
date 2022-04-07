@@ -97,7 +97,7 @@ def start_detecting():
     alert.init()
     alert.read("A program elindult!")
     vs = VideoStream(src = 0).start()
-    prev_frames = []
+    prev_frames = [True]
     time.sleep(2.0)
     while True:
         frame = vs.read()
