@@ -16,7 +16,6 @@ ami az összes érzékelőre jellemző feladatokat általánosítja,
 A MeBuzzer pedig a beépített berregőt vezérli, melynek segítségével az eszköz bekapcsolását jelezzük.
 **/
 #include <Wire.h>
-#include <SoftwareSerial.h>
 #include <MeMCore.h>
 
 MeUltrasonicSensor ultr(PORT_3);
@@ -28,7 +27,7 @@ MePort generalDevice;
 MeBuzzer buzzer;
 
 //Ezen két változóban adjuk meg a maximális, illetve minimális objektum megközelítési távolságot.
-uint8_t maxtav = 30;
+uint8_t maxtav = 40;
 uint8_t mintav  = 15;
 
 //Létrehozzuk a memóriában tárolandó elemek tömbjét, és az első elem indexét 0-val tesszük egyenlővé.
@@ -37,6 +36,8 @@ byte index = 0;
 
 //Meghatározzuk az átlagos mozgási (előrehaladási) sebességet.
 int sebesseg = 150;
+//Meghatározzuk az átlagos fordulási sebességet.
+int fordulasi_sebesseg = 100;
 //Megadjuk a modulok csatlakozási pontját (pin)
 #define TAVOLSAGSZENZOR   1
 #define TALAJSZENZOR      17
@@ -63,14 +64,14 @@ void Hatra()
 
 void Balra()
 {
-  MotorL.run(230);
-  MotorR.run(230);
+  MotorL.run(fordulasi_sebesseg);
+  MotorR.run(fordulasi_sebesseg);
 }
 
 void Jobbra()
 {
-  MotorL.run(-230);
-  MotorR.run(-230);
+  MotorL.run(-fordulasi_sebesseg);
+  MotorR.run(-fordulasi_sebesseg);
 }
 
 void Stop()
@@ -97,26 +98,23 @@ void Mozgas()
   {
     //Ha mindkét szenzor távolinak érzékeli a talajt (esés várható), a robot hátrál, majd balra fordul.
     case S1_IN_S2_IN:
-      MotorL.run(230); 
-      MotorR.run(-230);
-      delay(500);
+      Hatra();
+      delay(2000);
       Balra();
       delay(500);
       break;
 
     //Ha a baloldali szenzor távolinak érzékeli a talajt (esés várható), a robot hátrál, majd jobbra fordul.
     case S1_IN_S2_OUT:
-      MotorL.run(230); 
-      MotorR.run(-230);
-      delay(500);
+      Hatra();
+      delay(2000);
       Jobbra();
       delay(500);
       break;
    //Ha a jobboldali szenzor távolinak érzékeli a talajt (esés várható), a robot hátrál, majd balra fordul.
     case S1_OUT_S2_IN:
-      MotorL.run(230); 
-      MotorR.run(-230);
-      delay(500);
+      Hatra();
+      delay(2000);
       Balra();
       delay(500);
       break;
@@ -132,15 +130,15 @@ void Mozgas()
     {
       case 0:
         Hatra();
-        delay(1000);
-        Balra();
         delay(2000);
+        Balra();
+        delay(300);
         break;
       case 1:
         Hatra();
-        delay(1000);
-        Jobbra();
         delay(2000);
+        Jobbra();
+        delay(300);
         break;
     }
   }
@@ -150,10 +148,14 @@ void Mozgas()
     switch (VeletlenSzam)
     {
       case 0:
+        Hatra();
+        delay(2000);
         Balra();
         delay(800);
         break;
       case 1:
+        Hatra();
+        delay(2000);
         Jobbra();
         delay(800);
         break;
