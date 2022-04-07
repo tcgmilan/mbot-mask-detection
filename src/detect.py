@@ -105,7 +105,7 @@ def start_detecting():
         for (box, pred) in zip(locs, preds):
             (mask, without_mask) = pred
             print("results: ", results)
-            print("mask: "+ mask + "\n womask: " + without_mask)
+            print("mask: "+ str(mask) + "\n womask: " + str(without_mask))
             if without_mask > mask:
                 results.append(False)
                 alert.read_warning()
