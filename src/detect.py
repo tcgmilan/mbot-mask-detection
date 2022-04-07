@@ -79,6 +79,7 @@ def calculate_mask(frame, face_net, mask_net):
                 pass
             locs.append((start_x, start_y, end_x, end_y))
     face_counter(faces)
+    faces = faces [1:]
     if len(faces):
         faces = np.array(faces, dtype = "float32")
         preds = mask_net.predict(faces, batch_size = 32)
