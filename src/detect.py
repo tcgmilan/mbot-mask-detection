@@ -111,6 +111,7 @@ def start_detecting():
             if without_mask > mask:
                 if len(prev_frames) == 2:
                     prev_frames.clear()
+                    prev_frames.append(True)
                 else:
                     prev_frames.append(False)
                 alert.read_warning()
