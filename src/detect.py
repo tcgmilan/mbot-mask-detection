@@ -118,7 +118,7 @@ def start_detecting():
                 time.sleep(to_int(config["BEALLITASOK"]["figyelmeztetes_varakozas"]))
             else:
                 if prev_frames[-1] is False:
-                    alert.read("MŰKÖDIK! RAJTAD VAN A MASZK! NÁJSZ!")
+                    alert.read_award()
                     prev_frames.clear()
 
                 mask_found()
