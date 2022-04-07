@@ -109,7 +109,10 @@ def start_detecting():
 
             (mask, without_mask) = pred 
             if without_mask > mask:
-                prev_frames.append(False)
+                if len(prev_frames) == 2:
+                    prev_frames.clear()
+                else:
+                    prev_frames.append(False)
                 alert.read_warning()
                 mask_not_found()
                 time.sleep(to_int(config["BEALLITASOK"]["figyelmeztetes_varakozas"]))
