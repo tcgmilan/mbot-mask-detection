@@ -36,9 +36,9 @@ import configparser
 # Beállítások betöltése
 colorama.init(autoreset = True)
 path = "/home/pi/mbot-mask-detection/"
-proto_txt_path = os.path.join(path, "dataset", "deploy.prototxt")
-weights_path = os.path.join(path, "dataset", "res10_300x300_ssd_iter_140000.caffemodel")
-mask_detector_model = os.path.join(path, "dataset", "mask_detector.model")
+proto_txt_path = os.path.join(path, "dataset/", "deploy.prototxt")
+weights_path = os.path.join(path, "dataset/", "res10_300x300_ssd_iter_140000.caffemodel")
+mask_detector_model = os.path.join(path, "dataset/", "mask_detector.model")
 face_net = cv2.dnn.readNet(proto_txt_path, weights_path)
 mask_net = load_model(mask_detector_model)
 config = configparser.ConfigParser()
@@ -69,13 +69,18 @@ def calculate_mask(frame, face_net, mask_net):
             (start_x, start_y,) = (max(0, start_x), max(0, start_y))
             (end_x, end_y,) = (max(0, end_x), max(0, end_y))
             face = frame[start_y : end_y, start_x : end_x]
-            face = cv2.cvtColor(face, cv2.COLOR_BGR2RGB)
-            face = cv2.resize(face, (224, 224))
-            face = img_to_array(face)
-            face = preprocess_input(face)
-            faces.append(face)
+            try:
+                face = cv2.cvtColor(face, cv2.COLOR_BGR2RGB)
+                face = cv2.resize(face, (224, 224))
+                face = img_to_array(face)
+                face = preprocess_input(face)
+                faces.append(face)
+            except:
+                pass
             locs.append((start_x, start_y, end_x, end_y))
     face_counter(faces)
+    if len(faces) > 1:
+        faces = faces [1:]
     if len(faces):
         faces = np.array(faces, dtype = "float32")
         preds = mask_net.predict(faces, batch_size = 32)
@@ -92,7 +97,9 @@ def start_detecting():
     """
     alert = Alert()
     alert.init()
+    alert.read("A program elindult!")
     vs = VideoStream(src = 0).start()
+    prev_frames = [True]
     time.sleep(2.0)
     while True:
         frame = vs.read()
@@ -101,13 +108,23 @@ def start_detecting():
         (locs, preds) = calculate_mask(frame, face_net, mask_net)
 
         for (box, pred) in zip(locs, preds):
-            (mask, without_mask) = pred
-            
+
+            (mask, without_mask) = pred 
             if without_mask > mask:
+                if len(prev_frames) == 2:
+                    prev_frames.clear()
+                    prev_frames.append(True)
+                else:
+                    prev_frames.append(False)
                 alert.read_warning()
-                time.sleep(to_int(config["BEALLITASOK"]["figyelmeztetes_varakozas"]))
                 mask_not_found()
+                time.sleep(to_int(config["BEALLITASOK"]["figyelmeztetes_varakozas"]))
             else:
+                if prev_frames[-1] is False:
+                    alert.read_award()
+                    prev_frames.clear()
+                    prev_frames.append(True)
+
                 mask_found()
         if to_bool(config["BEALLITASOK"]["video_kimenet"]):
             cv2.imshow("m5 maskey | maszk érzékelés", frame)
