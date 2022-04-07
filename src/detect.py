@@ -120,6 +120,7 @@ def start_detecting():
                 if prev_frames[-1] is False:
                     alert.read_award()
                     prev_frames.clear()
+                    prev_frames.append(True)
 
                 mask_found()
         if to_bool(config["BEALLITASOK"]["video_kimenet"]):
